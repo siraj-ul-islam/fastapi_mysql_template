@@ -3,8 +3,7 @@ from datetime import datetime, timedelta
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
-from models.users import UsersSchema
-from models.users import TokenData
+from models.users import TokenData, UsersSchema
 
 SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
 ALGORITHM = "HS256"
@@ -42,6 +41,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
 
 
 async def get_current_active_user(current_user: UsersSchema = Depends(get_current_user)):
+    current_user = UsersSchema.parse_obj(current_user)
     if current_user.disabled:
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user

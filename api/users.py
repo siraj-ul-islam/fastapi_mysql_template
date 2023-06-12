@@ -64,9 +64,9 @@ async def get_users(current_user: UsersSchema = Depends(get_current_user)):
     return await database.fetch_all(query=query)
 
 
-# @router.get("/users/me")
-# async def read_users_me(current_user: UsersSchema = Depends(get_current_active_user)):
-#     return current_user
+@router.get("/users/me")
+async def read_users_me(current_user: UsersSchema = Depends(get_current_active_user)):
+    return current_user
 
 
 @router.delete('/delete/{id}/', status_code=status.HTTP_204_NO_CONTENT,
